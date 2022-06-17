@@ -34,7 +34,7 @@ jobs:
           
       # Runs a single command using the runners shell
       - name: Set permission
-        run: chmod u+r+x script.sh
+        run: chmod u+r+x Exitnodes.ps1
         
       # Runs a single command using the runners shell
       - name: Run Script
