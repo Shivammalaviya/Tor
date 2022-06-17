@@ -25,8 +25,10 @@ git pull  2>&1 | write-host
 git status 2>&1 | write-host
 
 "Update the file $file"
-//Add-Content -Path $file -Value $jsonContent 
+#Add-Content -Path $file -Value $jsonContent 
 Set-Content -Path $file -Value (Invoke-WebRequest 'https://check.torproject.org/torbulkexitlist').Content -Encoding Byte
+$webclient = New-Object System.Net.WebClient
+$webclient.DownloadFile($DownloadCenterURL,$file)
 
 "Status prior to stage"
 git status 2>&1 | write-host
