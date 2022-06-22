@@ -1,15 +1,12 @@
-$DownloadCenterURL = "https://check.torproject.org/torbulkexitlist"
-#$Response = Invoke-WebRequest -URI $DownloadCenterURL
-#$DownloadLink = $Response.Links |  where {$_.href.Contains("/ServiceTags_Public")} | select href
-#$DownloadURL = [System.Uri]$DownloadLink[0].href
-#$jsonFileData = Invoke-WebRequest -Method Get -URI $DownloadURL | ConvertFrom-Json
-#$jsonContent = $jsonFileData | ConvertTo-Json -depth 100
-#$jsonFileData | ConvertTo-Json -depth 100 | Out-File ".\servicetags.json"
+$DownloadCenterURL = "https://torinfo.blob.core.windows.net/public/TorRelayIPs.csv"
+$Response = Invoke-RestMethod -URI $DownloadCenterURL
+$txtFileData = $Response
+
 write-host "File Fetch completed."
 
 #decleration
-$file = ".\Torexitnodes.csv"
-$text = $jsonFileData 
+$file = ".\torexitnodes.csv"
+$text = $txtFileData
 $wi = "#13 #14"
 
 "Set config"
@@ -21,12 +18,12 @@ git checkout main 2>&1 | write-host # need the stderr redirect as some git comma
 
 "Update the local repo"
 git pull  2>&1 | write-host
+
 "Status at start"
 git status 2>&1 | write-host
 
 "Update the file $file"
-//Add-Content -Path $file -Value $jsonContent 
-Set-Content -Path $file -Value (Invoke-WebRequest 'https://check.torproject.org/torbulkexitlist').Content -Encoding Byte
+Add-Content -Path $file -Value $text
 
 "Status prior to stage"
 git status 2>&1 | write-host
